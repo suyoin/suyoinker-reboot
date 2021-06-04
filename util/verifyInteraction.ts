@@ -4,61 +4,6 @@ import nacl from "tweetnacl";
 const LocalTextEncoder = typeof TextEncoder === "undefined" ? require("util").TextEncoder : TextEncoder;
 
 /**
- * The type of interaction this request is.
- */
-enum InteractionType {
-	/**
-	 * A ping.
-	 */
-	PING = 1,
-	/**
-	 * A command invocation.
-	 */
-	APPLICATION_COMMAND = 2,
-	/**
-	 * Usage of a message's component.
-	 */
-	MESSAGE_COMPONENT = 3,
-}
-
-/**
- * The type of response that is being sent.
- */
-enum InteractionResponseType {
-	/**
-	 * Acknowledge a `PING`.
-	 */
-	PONG = 1,
-	/**
-	 * Respond with a message, showing the user's input.
-	 */
-	CHANNEL_MESSAGE_WITH_SOURCE = 4,
-	/**
-	 * Acknowledge a command without sending a message, showing the user's input. Requires follow-up.
-	 */
-	DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE = 5,
-	/**
-	 * Acknowledge an interaction and edit the original message that contains the component later; the user does not see a loading state.
-	 */
-	DEFERRED_UPDATE_MESSAGE = 6,
-	/**
-	 * Edit the message the component was attached to.
-	 */
-	UPDATE_MESSAGE = 7,
-}
-
-/**
- * Flags that can be included in an Interaction Response.
- */
-enum InteractionResponseFlags {
-	/**
-	 * Show the message only to the user that performed the interaction. Message
-	 * does not persist between sessions.
-	 */
-	EPHEMERAL = 1 << 6,
-}
-
-/**
  * Converts different types to Uint8Array.
  *
  * @param value - Value to convert. Strings are parsed as hex.
@@ -83,7 +28,6 @@ function valueToUint8Array(value: Uint8Array | ArrayBuffer | Buffer | string, fo
 	}
 	try {
 		if (Buffer.isBuffer(value)) {
-			const arrayBuffer = value.buffer.slice(value.byteOffset, value.byteOffset + value.length);
 			return new Uint8Array(value);
 		}
 	} catch (ex) {
