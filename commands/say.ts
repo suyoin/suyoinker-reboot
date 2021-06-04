@@ -1,5 +1,5 @@
 import { APIInteraction, ApplicationCommandInteractionDataOptionString } from "discord-api-types";
-const { APIInteractionResponseType, ApplicationCommandOptionType } = require("discord-api-types");
+const { APIInteractionResponseType } = require("discord-api-types");
 
 export const execute = (interaction: APIInteraction) => {
 	const messageOption = interaction.data!.options!.find((obj) => {
