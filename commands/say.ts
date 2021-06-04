@@ -1,11 +1,6 @@
-import {
-	InteractionResponseType,
-	APIInteraction,
-	ApplicationCommandInteractionDataOptionString,
-	APIInteractionResponseChannelMessageWithSource,
-} from "discord-api-types/v8";
+import { APIInteraction, ApplicationCommandInteractionDataOptionString } from "discord-api-types/v8";
 
-export const execute = (interaction: APIInteraction): APIInteractionResponseChannelMessageWithSource => {
+export const execute = (interaction: APIInteraction) => {
 	const messageOption = interaction.data!.options!.find((obj) => {
 		return obj.name === "message";
 	}) as ApplicationCommandInteractionDataOptionString;
@@ -14,7 +9,7 @@ export const execute = (interaction: APIInteraction): APIInteractionResponseChan
 	text = text.replace("@everyone", "");
 
 	return {
-		type: InteractionResponseType.ChannelMessageWithSource,
+		type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 		data: {
 			content: text,
 		},
