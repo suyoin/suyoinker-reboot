@@ -2,18 +2,18 @@ import { APIInteraction } from "discord-api-types/v8";
 import { readdirSync } from "fs";
 const { InteractionResponseType, InteractionType } = require("discord-api-types/v8");
 import { NextApiRequest, NextApiResponse } from "next";
-import parseBody from "../../util/parseBody";
-import verifyInteraction from "../../util/verifyInteraction";
+import parseBody from "../util/parseBody";
+import verifyInteraction from "../util/verifyInteraction";
 
 const { PUBLIC_KEY } = process.env;
 
-const commandFiles = readdirSync("../../commands").filter((file) => {
+const commandFiles = readdirSync("../commands").filter((file) => {
 	return !file.startsWith("commandDefinitions") && file.endsWith(".ts");
 });
 
 const commands = new Map<string, CommandExport>();
 commandFiles.forEach((file) => {
-	commands.set(file, require(`../../commands/${file}`));
+	commands.set(file, require(`../commands/${file}`));
 });
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
