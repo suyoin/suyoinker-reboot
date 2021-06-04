@@ -1,4 +1,4 @@
-import { APIInteraction, ApplicationCommandInteractionDataOptionString } from "discord-api-types/v8";
+import type { APIInteraction, ApplicationCommandInteractionDataOptionString } from "discord-api-types/v8";
 const { APIInteractionResponseType } = require("discord-api-types/v8");
 
 export const execute = (interaction: APIInteraction) => {
