@@ -1,5 +1,8 @@
-import type { APIInteraction, ApplicationCommandInteractionDataOptionString } from "discord-api-types/v8";
-const { APIInteractionResponseType } = require("discord-api-types/v8");
+import {
+	InteractionResponseType,
+	APIInteraction,
+	ApplicationCommandInteractionDataOptionString,
+} from "discord-api-types/v8";
 
 export const execute = (interaction: APIInteraction) => {
 	const messageOption = interaction.data!.options!.find((obj) => {
@@ -10,7 +13,7 @@ export const execute = (interaction: APIInteraction) => {
 	text = text.replace("@everyone", "");
 
 	return {
-		type: APIInteractionResponseType.ChannelMessageWithSource,
+		type: InteractionResponseType.ChannelMessageWithSource,
 		data: {
 			content: text,
 		},
