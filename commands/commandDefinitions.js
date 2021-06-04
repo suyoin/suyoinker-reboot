@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType } = require("discord-api-types");
+const { ApplicationCommandOptionType } = require("discord-api-types/v8");
 
 module.exports = {
 	ping: {

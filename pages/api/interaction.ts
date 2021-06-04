@@ -1,6 +1,6 @@
-import { APIInteraction } from "discord-api-types";
+import { APIInteraction } from "discord-api-types/v8";
 import { readdirSync } from "fs";
-const { InteractionResponseType, InteractionType } = require("discord-api-types");
+const { InteractionResponseType, InteractionType } = require("discord-api-types/v8");
 import { NextApiRequest, NextApiResponse } from "next";
 import parseBody from "../../util/parseBody";
 import verifyInteraction from "../../util/verifyInteraction";
