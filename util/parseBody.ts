@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 
-import { parse } from "next/dist/compiled/content-type";
+const { parse } = require("next/dist/compiled/content-type");
 import getRawBody from "raw-body";
 
 const parseJson = (str: string) => {
