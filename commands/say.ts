@@ -2,9 +2,10 @@ import {
 	InteractionResponseType,
 	APIInteraction,
 	ApplicationCommandInteractionDataOptionString,
+	APIInteractionResponseChannelMessageWithSource,
 } from "discord-api-types/v8";
 
-export const execute = (interaction: APIInteraction) => {
+export const execute = (interaction: APIInteraction): APIInteractionResponseChannelMessageWithSource => {
 	const messageOption = interaction.data!.options!.find((obj) => {
 		return obj.name === "message";
 	}) as ApplicationCommandInteractionDataOptionString;
