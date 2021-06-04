@@ -3,7 +3,7 @@
 		"silent": true
 	},
 	"functions": {
-		"api/interaction.*": {
+		"pages/api/interaction.ts": {
 			"includeFiles": "commands/**"
 		}
 	}
