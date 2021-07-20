@@ -26,6 +26,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	const { parsedBody, rawBody } = parseBodyResult;
 
 	const interaction = parsedBody as APIInteraction;
+	const timestamp = (req.headers["x-signature-timestamp"] || "") as string;
+	const signature = (req.headers["x-signature-ed25519"] || "") as string;
+
+	if (!verifyInteraction(rawBody as string, signature, timestamp, PUBLIC_KEY as string)) {
+		res.status(401).end("[interaction]: Invalid signature");
+		return;
+	}
+
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	//@ts-ignore
 	if (interaction.type === InteractionType.Ping) {
@@ -35,14 +43,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 	if (!interaction.data) {
 		res.status(400).end("[interaction]: Interaction body is invalid");
-		return;
-	}
-
-	const timestamp = (req.headers["x-signature-timestamp"] || "") as string;
-	const signature = (req.headers["x-signature-ed25519"] || "") as string;
-
-	if (!verifyInteraction(rawBody as string, signature, timestamp, PUBLIC_KEY as string)) {
-		res.status(401).end("[interaction]: Invalid signature");
 		return;
 	}
 
