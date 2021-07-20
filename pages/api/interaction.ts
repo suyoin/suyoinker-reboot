@@ -7,7 +7,7 @@ import verifyInteraction from "../../util/verifyInteraction";
 
 const { PUBLIC_KEY } = process.env;
 
-const commandFiles = readdirSync(join(__dirname, "..", "commands")).filter((file) => {
+const commandFiles = readdirSync(join(__dirname, "../../", "commands")).filter((file) => {
 	return !file.startsWith("commandDefinitions") && file.endsWith(".ts");
 });
 
