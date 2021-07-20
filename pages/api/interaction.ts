@@ -2,8 +2,8 @@ import { APIInteraction, InteractionResponseType, InteractionType } from "discor
 import { readdirSync } from "fs";
 import { NextApiRequest, NextApiResponse } from "next";
 import { join } from "path";
-import parseBody from "../util/parseBody";
-import verifyInteraction from "../util/verifyInteraction";
+import parseBody from "../../util/parseBody";
+import verifyInteraction from "../../util/verifyInteraction";
 
 const { PUBLIC_KEY } = process.env;
 
