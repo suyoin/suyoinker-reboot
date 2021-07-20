@@ -1,6 +1,5 @@
-import { APIInteraction } from "discord-api-types/v8";
+import { APIInteraction, InteractionResponseType, InteractionType } from "discord-api-types/v9";
 import { readdirSync } from "fs";
-const { InteractionType } = require("discord-api-types/v8");
 import { NextApiRequest, NextApiResponse } from "next";
 import { join } from "path";
 import parseBody from "../util/parseBody";
@@ -40,20 +39,24 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		return;
 	}
 
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	//@ts-ignore
 	if (interaction.type === InteractionType.Ping) {
-		res.status(200).send({ type: InteractionResponseType.PONG });
+		res.status(200).send({ type: InteractionResponseType.Pong });
 		return;
 	}
 
-	if (!commands.has(interaction.data.name)) {
-		res.status(400).end("[interaction]: Command does not exist");
-		return;
-	}
+	if (interaction.type === InteractionType.ApplicationCommand) {
+		if (!commands.has(interaction.data.name)) {
+			res.status(400).end("[interaction]: Command does not exist");
+			return;
+		}
 
-	const commandResponse = await commands.get(interaction.data.name)!.execute(interaction);
-	res.status(200);
-	if (commandResponse) {
-		res.send(commandResponse);
+		const commandResponse = await commands.get(interaction.data.name)!.execute(interaction);
+		res.status(200);
+		if (commandResponse) {
+			res.send(commandResponse);
+		}
 	}
 };
 
