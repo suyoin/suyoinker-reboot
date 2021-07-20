@@ -12,15 +12,9 @@ const commandFiles = readdirSync(join(__dirname, "..", "commands")).filter((file
 });
 
 const commands = new Map<string, CommandExport>();
-
-let commandsImported = false;
-const importCommands = async () => {
-	for (const file of commandFiles) {
-		commands.set(file, await import(`../commands/${file}`));
-	}
-	commandsImported = true;
-};
-const importCommandsHandle = importCommands();
+commandFiles.forEach((file) => {
+	commands.set(file, require(`../commands/${file}`));
+});
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	const parseBodyResult = await parseBody(req);
@@ -53,10 +47,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	if (interaction.type === InteractionType.ApplicationCommand) {
-		if (!commandsImported) {
-			await importCommandsHandle;
-		}
-
 		if (!commands.has(interaction.data.name)) {
 			res.status(400).end("[interaction]: Command does not exist");
 			return;
