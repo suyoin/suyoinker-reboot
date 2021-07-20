@@ -1,11 +1,10 @@
 import {
-	APIInteraction,
 	ApplicationCommandInteractionDataOptionString,
 	InteractionResponseType,
 	InteractionType,
 } from "discord-api-types";
 
-export const execute = (interaction: APIInteraction) => {
+export const execute = (interaction: LocalAPIInteraction) => {
 	if (interaction.type !== InteractionType.ApplicationCommand) {
 		return;
 	}
