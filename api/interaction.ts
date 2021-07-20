@@ -12,8 +12,8 @@ const commandFiles = readdirSync(join(__dirname, "..", "commands")).filter((file
 });
 
 const commands = new Map<string, CommandExport>();
-commandFiles.forEach((file) => {
-	commands.set(file, require(`../commands/${file}`));
+await commandFiles.forEach(async (file) => {
+	commands.set(file, await import(`../commands/${file}`));
 });
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
