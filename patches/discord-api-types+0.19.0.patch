@@ -20,3 +20,17 @@ index 76aebca..87411ec 100644
      /**
       * ACK a `Ping`
       */
+
+diff --git a/node_modules/discord-api-types/payloads/v9/channel.d.ts b/node_modules/discord-api-types/payloads/v9/channel.d.ts
+index cf215cf..f3e0531 100644
+--- a/node_modules/discord-api-types/payloads/v9/channel.d.ts
++++ b/node_modules/discord-api-types/payloads/v9/channel.d.ts
+@@ -468,7 +468,7 @@ export declare const enum MessageActivityType {
+ /**
+  * https://discord.com/developers/docs/resources/channel#message-object-message-flags
+  */
+-export declare const enum MessageFlags {
++export enum MessageFlags {
+     /**
+      * This message has been published to subscribed channels (via Channel Following)
+      */
