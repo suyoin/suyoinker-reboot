@@ -8,14 +8,12 @@ import verifyInteraction from "../../util/verifyInteraction";
 const { PUBLIC_KEY } = process.env;
 
 const commandFiles = readdirSync(path.join(process.cwd(), "commands")).filter((file) => {
-	console.log(`readdir ${file}`);
 	return !file.startsWith("commandDefinitions");
 });
 
 const commands = new Map<string, CommandExport>();
 commandFiles.forEach((file) => {
-	console.log(`add ${file}`);
-	commands.set(file, require(`../../commands/${file}`));
+	commands.set(file.replace(".ts", ""), require(`../../commands/${file}`));
 });
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
