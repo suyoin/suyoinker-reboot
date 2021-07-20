@@ -19,7 +19,7 @@ export const execute = (interaction: LocalAPIInteraction) => {
 	return {
 		type: InteractionResponseType.ChannelMessageWithSource,
 		data: {
-			content: text,
+			content: "",
 		},
 	};
 };
