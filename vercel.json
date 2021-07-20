@@ -1,10 +1,5 @@
 {
 	"github": {
 		"silent": true
-	},
-	"functions": {
-		"api/interaction.ts": {
-			"includeFiles": "commands/**"
-		}
 	}
 }

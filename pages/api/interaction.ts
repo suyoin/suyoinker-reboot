@@ -1,7 +1,7 @@
 import { APIInteraction, InteractionResponseType, InteractionType } from "discord-api-types/v9";
 import { readdirSync } from "fs";
 import { NextApiRequest, NextApiResponse } from "next";
-import path from "path/posix";
+import path from "path";
 import parseBody from "../../util/parseBody";
 import verifyInteraction from "../../util/verifyInteraction";
 
