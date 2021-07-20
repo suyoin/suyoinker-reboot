@@ -2,7 +2,7 @@ import {
 	APIApplicationCommandInteraction,
 	ApplicationCommandInteractionDataOptionString,
 	InteractionResponseType,
-} from "discord-api-types/v9";
+} from "discord-api-types";
 
 export const execute = (interaction: APIApplicationCommandInteraction) => {
 	const messageOption = interaction.data!.options!.find((obj) => {
