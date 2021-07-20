@@ -1,5 +1,5 @@
 import axios from "axios";
-import { InteractionResponseType, InteractionType, MessageFlags } from "discord-api-types/v9";
+import { InteractionResponseType, InteractionType } from "discord-api-types/v9";
 import { endpoint } from "../constant";
 import { createFormData } from "../util/createFormData";
 
@@ -46,7 +46,6 @@ export const execute = async (interaction: LocalAPIInteraction) => {
 			type: InteractionResponseType.ChannelMessageWithSource,
 			data: {
 				content: `Fetching latex for \`${latexInput}\`...`,
-				flags: MessageFlags.Ephemeral,
 			},
 		},
 	});
