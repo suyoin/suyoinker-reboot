@@ -1,10 +1,5 @@
 import axios from "axios";
-import {
-	ApplicationCommandInteractionDataOptionString,
-	InteractionResponseType,
-	InteractionType,
-	MessageFlags,
-} from "discord-api-types/v9";
+import { InteractionResponseType, InteractionType, MessageFlags } from "discord-api-types/v9";
 import { endpoint } from "../constant";
 import { createFormData } from "../util/createFormData";
 
