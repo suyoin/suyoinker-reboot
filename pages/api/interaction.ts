@@ -8,7 +8,7 @@ import verifyInteraction from "../../util/verifyInteraction";
 const { PUBLIC_KEY } = process.env;
 
 const commandFiles = readdirSync(path.join(process.cwd(), "commands")).filter((file) => {
-	return !file.startsWith("commandDefinitions") && file.endsWith(".ts");
+	return !file.startsWith("commandDefinitions");
 });
 
 const commands = new Map<string, CommandExport>();
