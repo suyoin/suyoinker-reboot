@@ -18,36 +18,34 @@ commandFiles.forEach((file) => {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	const parseBodyResult = await parseBody(req);
-	console.log("before parse body")
 	if (!parseBodyResult) {
 		res.status(400).end("[interaction]: Parse body failed");
 		return;
 	}
-	console.log("after parse body")
+
 	const { parsedBody, rawBody } = parseBodyResult;
 
 	const interaction = parsedBody as APIInteraction;
-	console.log("before int")
-	if (!interaction.data) {
-		res.status(400).end("[interaction]: Interaction body is invalid");
-		return;
-	}
-	console.log("after int")
-	const timestamp = (req.headers["x-signature-timestamp"] || "") as string;
-	const signature = (req.headers["x-signature-ed25519"] || "") as string;
-	console.log("before ver")
-	if (!verifyInteraction(rawBody as string, signature, timestamp, PUBLIC_KEY as string)) {
-		res.status(401).end("[interaction]: Invalid signature");
-		return;
-	}
-	console.log("after ver")
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	//@ts-ignore
 	if (interaction.type === InteractionType.Ping) {
 		res.status(200).send({ type: InteractionResponseType.Pong });
 		return;
 	}
-	console.log("after ping")
+
+	if (!interaction.data) {
+		res.status(400).end("[interaction]: Interaction body is invalid");
+		return;
+	}
+
+	const timestamp = (req.headers["x-signature-timestamp"] || "") as string;
+	const signature = (req.headers["x-signature-ed25519"] || "") as string;
+
+	if (!verifyInteraction(rawBody as string, signature, timestamp, PUBLIC_KEY as string)) {
+		res.status(401).end("[interaction]: Invalid signature");
+		return;
+	}
+
 	if (interaction.type === InteractionType.ApplicationCommand) {
 		if (!commands.has(interaction.data.name)) {
 			res.status(400).end("[interaction]: Command does not exist");
