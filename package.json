@@ -4,7 +4,7 @@
 		"build": "next build",
 		"now-build": "npm run build",
 		"start": "next start",
-		"postinstall": "patch-package"
+		"postinstall": "npx patch-package"
 	},
 	"devDependencies": {
 		"@types/node": "^15.12.0",
