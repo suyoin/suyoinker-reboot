@@ -48,6 +48,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 	if (interaction.type === InteractionType.ApplicationCommand) {
 		if (!commands.has(interaction.data.name)) {
+			console.log(`${interaction.data.name} command does not have a handler file.`);
 			res.status(400).end("[interaction]: Command does not exist");
 			return;
 		}
