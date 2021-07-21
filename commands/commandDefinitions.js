@@ -1,18 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord-api-types/v8");
 
 module.exports = {
-	ping: {
-		name: "ping",
-		description: "wake up",
-	},
-	poggies: {
-		name: "poggies",
-		description: "poggy woggy",
-	},
-	mrkrabs: {
-		name: "mrkrabs",
-		description: "oioioi",
-	},
 	say: {
 		name: "say",
 		description: "say some gamer words",
@@ -25,6 +13,49 @@ module.exports = {
 			},
 		],
 	},
+	latex: {
+		name: "latex",
+		description: "generate a latex image",
+		options: [
+			{
+				type: ApplicationCommandOptionType.STRING,
+				name: "string",
+				description: "the latex markup",
+				required: true,
+			},
+			{
+				type: ApplicationCommandOptionType.BOOLEAN,
+				name: "black",
+				description: "why though",
+			},
+		],
+	},
+	poll: {
+		name: "poll",
+		description: "start a poll",
+		options: [
+			{
+				type: ApplicationCommandOptionType.STRING,
+				name: "message",
+				description: "the poll message",
+				required: true,
+			},
+		],
+	},
+
+	ping: {
+		name: "ping",
+		description: "wake up",
+	},
+	poggies: {
+		name: "poggies",
+		description: "poggy woggy",
+	},
+	mrkrabs: {
+		name: "mrkrabs",
+		description: "oioioi",
+	},
+
 	translate: {
 		name: "translate",
 		description: "translate a message",
@@ -84,35 +115,7 @@ module.exports = {
 			},
 		],
 	},
-	poll: {
-		name: "poll",
-		description: "start a poll",
-		options: [
-			{
-				type: ApplicationCommandOptionType.STRING,
-				name: "message",
-				description: "the poll message",
-				required: true,
-			},
-		],
-	},
-	latex: {
-		name: "latex",
-		description: "generate a latex image",
-		options: [
-			{
-				type: ApplicationCommandOptionType.STRING,
-				name: "string",
-				description: "the latex markup",
-				required: true,
-			},
-			{
-				type: ApplicationCommandOptionType.BOOLEAN,
-				name: "black",
-				description: "why though",
-			},
-		],
-	},
+
 	search: {
 		name: "search",
 		description: "search for things",
