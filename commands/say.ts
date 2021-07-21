@@ -6,7 +6,7 @@ import {
 	InteractionType,
 	MessageFlags,
 } from "../discord-api-types/v9";
-import { endpoint } from "../constant";
+import { authorizationHeader, endpoint } from "../constant";
 
 export const execute = async (interaction: APIInteraction) => {
 	if (interaction.type !== InteractionType.ApplicationCommand) {
@@ -34,10 +34,9 @@ export const execute = async (interaction: APIInteraction) => {
 
 	await axios({
 		method: "POST",
-		url: `${endpoint}/webhooks/${process.env.CLIENT_ID}/${interaction.token}`,
-		data: {
-			content: text,
-		},
+		url: `${endpoint}/channels/${interaction.channel_id}/messages`,
+		headers: { "Content-Type": "application/json", Authorization: authorizationHeader },
+		data: { content: text },
 	});
 
 	await axios({

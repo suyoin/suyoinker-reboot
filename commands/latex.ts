@@ -6,7 +6,7 @@ import {
 	InteractionType,
 	MessageFlags,
 } from "../discord-api-types/v9";
-import { endpoint } from "../constant";
+import { authorizationHeader, endpoint } from "../constant";
 import { createFormData } from "../util/createFormData";
 
 export const execute = async (interaction: APIInteraction) => {
@@ -60,8 +60,12 @@ export const execute = async (interaction: APIInteraction) => {
 		const formData = createFormData(imageResponse.data);
 		await axios({
 			method: "POST",
-			url: `${endpoint}/webhooks/${process.env.CLIENT_ID}/${interaction.token}`,
-			headers: formData.getHeaders(),
+			url: `${endpoint}/channels/${interaction.channel_id}/messages`,
+			headers: {
+				"Content-Type": "application/json",
+				...formData.getHeaders(),
+				Authorization: authorizationHeader,
+			},
 			data: formData,
 		});
 	}
