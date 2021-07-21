@@ -4,6 +4,7 @@ import {
 	ApplicationCommandOptionType,
 	InteractionResponseType,
 	InteractionType,
+	MessageFlags,
 } from "../discord-api-types/v9";
 import { endpoint } from "../constant";
 import { createFormData } from "../util/createFormData";
@@ -51,6 +52,7 @@ export const execute = async (interaction: APIInteraction) => {
 				type: InteractionResponseType.ChannelMessageWithSource,
 				data: {
 					content: `Fetching latex for \`${latexInput.value}\`...`,
+					flags: MessageFlags.Ephemeral,
 				},
 			},
 		});

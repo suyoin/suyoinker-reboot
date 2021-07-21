@@ -4,6 +4,7 @@ import {
 	ApplicationCommandInteractionDataOptionString,
 	InteractionResponseType,
 	InteractionType,
+	MessageFlags,
 } from "../discord-api-types/v9";
 import { endpoint } from "../constant";
 
@@ -26,6 +27,7 @@ export const execute = async (interaction: APIInteraction) => {
 			type: InteractionResponseType.ChannelMessageWithSource,
 			data: {
 				content: "placeholder",
+				flags: MessageFlags.Ephemeral,
 			},
 		},
 	});
