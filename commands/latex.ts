@@ -1,9 +1,14 @@
 import axios from "axios";
-import { ApplicationCommandOptionType, InteractionResponseType, InteractionType } from "discord-api-types/v9";
+import {
+	APIInteraction,
+	ApplicationCommandOptionType,
+	InteractionResponseType,
+	InteractionType,
+} from "../discord-api-types/v9";
 import { endpoint } from "../constant";
 import { createFormData } from "../util/createFormData";
 
-export const execute = async (interaction: LocalAPIInteraction) => {
+export const execute = async (interaction: APIInteraction) => {
 	if (interaction.type !== InteractionType.ApplicationCommand) {
 		return;
 	}

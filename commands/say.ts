@@ -1,12 +1,13 @@
 import axios from "axios";
 import {
+	APIInteraction,
 	ApplicationCommandInteractionDataOptionString,
 	InteractionResponseType,
 	InteractionType,
-} from "discord-api-types/v9";
+} from "../discord-api-types/v9";
 import { endpoint } from "../constant";
 
-export const execute = async (interaction: LocalAPIInteraction) => {
+export const execute = async (interaction: APIInteraction) => {
 	if (interaction.type !== InteractionType.ApplicationCommand) {
 		return;
 	}
