@@ -20,3 +20,16 @@ index 76aebca..87411ec 100644
      /**
       * ACK a `Ping`
       */
+diff --git a/node_modules/discord-api-types/payloads/v9/_interactions/slashCommands.d.ts b/node_modules/discord-api-types/payloads/v9/_interactions/slashCommands.d.ts
+index 86e78ad..b610f5b 100644
+--- a/node_modules/discord-api-types/payloads/v9/_interactions/slashCommands.d.ts
++++ b/node_modules/discord-api-types/payloads/v9/_interactions/slashCommands.d.ts
+@@ -72,7 +72,7 @@ export interface APIApplicationCommandArgumentOptions extends Omit<APIApplicatio
+ /**
+  * https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-type
+  */
+-export declare const enum ApplicationCommandOptionType {
++export enum ApplicationCommandOptionType {
+     SubCommand = 1,
+     SubCommandGroup = 2,
+     String = 3,
