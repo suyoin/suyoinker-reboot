@@ -42,8 +42,12 @@ module.exports = {
 			},
 		],
 	},
+	roles: {
+		name: "roles",
+		description: "create a role selection message",
+	},
 
-	ping: {
+	/**ping: {
 		name: "ping",
 		description: "wake up",
 	},
@@ -403,5 +407,5 @@ module.exports = {
 	typing: {
 		name: "typing",
 		description: "make the bot look like it is typing",
-	},
+	},**/
 };
