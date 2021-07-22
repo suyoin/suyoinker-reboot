@@ -1,19 +1,14 @@
 import {
 	APIButtonComponent,
-	APIInteraction,
 	APIInteractionResponseUpdateMessage,
+	APIMessageComponentInteraction,
 	ButtonStyle,
 	ComponentType,
 	InteractionResponseType,
-	InteractionType,
 } from "../discord-api-types/v9";
 import { getValueFromCustomId } from "../util/customId";
 
-export const execute = async (interaction: APIInteraction) => {
-	if (interaction.type !== InteractionType.MessageComponent) {
-		return;
-	}
-
+export const execute = async (interaction: APIMessageComponentInteraction) => {
 	const value = getValueFromCustomId(interaction.data.custom_id);
 
 	const yesValue = parseInt((interaction.message.components![0].components[0] as APIButtonComponent).label!) || 0;

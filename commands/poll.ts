@@ -1,18 +1,13 @@
 import {
-	APIInteraction,
+	APIApplicationCommandInteraction,
 	APIInteractionResponseChannelMessageWithSource,
 	ApplicationCommandInteractionDataOptionString,
 	ButtonStyle,
 	ComponentType,
 	InteractionResponseType,
-	InteractionType,
 } from "../discord-api-types/v9";
 
-export const execute = async (interaction: APIInteraction) => {
-	if (interaction.type !== InteractionType.ApplicationCommand) {
-		return;
-	}
-
+export const execute = async (interaction: APIApplicationCommandInteraction) => {
 	const pollMessage = interaction.data.options!.find((obj) => {
 		return obj.name === "message";
 	})! as ApplicationCommandInteractionDataOptionString;

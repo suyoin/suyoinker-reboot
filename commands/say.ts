@@ -1,18 +1,13 @@
 import axios from "axios";
 import {
-	APIInteraction,
+	APIApplicationCommandInteraction,
 	ApplicationCommandInteractionDataOptionString,
 	InteractionResponseType,
-	InteractionType,
 	MessageFlags,
 } from "../discord-api-types/v9";
 import { authorizationHeader, endpoint } from "../constant";
 
-export const execute = async (interaction: APIInteraction) => {
-	if (interaction.type !== InteractionType.ApplicationCommand) {
-		return;
-	}
-
+export const execute = async (interaction: APIApplicationCommandInteraction) => {
 	const messageOption = interaction.data!.options!.find((obj) => {
 		return obj.name === "message";
 	}) as ApplicationCommandInteractionDataOptionString;

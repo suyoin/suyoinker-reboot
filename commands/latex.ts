@@ -1,19 +1,14 @@
 import axios from "axios";
 import {
-	APIInteraction,
+	APIApplicationCommandInteraction,
 	ApplicationCommandOptionType,
 	InteractionResponseType,
-	InteractionType,
 	MessageFlags,
 } from "../discord-api-types/v9";
 import { authorizationHeader, endpoint } from "../constant";
 import { createFormData } from "../util/createFormData";
 
-export const execute = async (interaction: APIInteraction) => {
-	if (interaction.type !== InteractionType.ApplicationCommand) {
-		return;
-	}
-
+export const execute = async (interaction: APIApplicationCommandInteraction) => {
 	const latexInput = interaction.data.options!.find((obj) => {
 		return obj.name === "string";
 	})!;
