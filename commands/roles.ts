@@ -46,7 +46,7 @@ export const execute = async (interaction: APIMessageComponentInteraction) => {
 		pause(0.1);
 	}
 
-	setDoc(doc(collection(db, "guilds"), interaction.guild_id!), { roles: roleNameToId });
+	await setDoc(doc(collection(db, "guilds"), interaction.guild_id!), { roles: roleNameToId });
 
 	const menuOptions: APISelectMenuOption[] = Object.keys(roleColors).map((value) => {
 		const definition = roleColors[value as keyof typeof roleColors];
