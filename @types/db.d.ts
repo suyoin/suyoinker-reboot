@@ -1,0 +1,1 @@
+type RolesField = { [key in keyof typeof roleColors]: string };

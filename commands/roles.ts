@@ -10,6 +10,7 @@ import {
 	ComponentType,
 	InteractionResponseType,
 } from "../discord-api-types/v9";
+import { rolesCache } from "../lib/cache";
 import { getApp, getDatabase } from "../lib/firebase";
 import pause from "../util/pause";
 
@@ -27,49 +28,49 @@ const createGuildRole = async (guildId: string, colorName: string, colorValue: n
 	return response.data.id;
 };
 
+const constructMenuOptionsFromCachedValue = (guildId: string): APISelectMenuOption[] => {
+	const cachedValue = rolesCache.get(guildId)!;
+
+	return Object.keys(cachedValue).map((value) => {
+		const definition = roleColors[value as keyof typeof roleColors];
+		return {
+			label: value,
+			value: cachedValue[value],
+			emoji: { id: definition.emojiId as `${bigint}`, name: value, animated: definition.animated },
+		};
+	});
+};
+
 export const execute = async (interaction: APIMessageComponentInteraction) => {
-	const app = await getApp();
-	const db = await getDatabase(app);
-
-	const roles = await getDoc(doc(collection(db, "guilds"), interaction.guild_id!));
-
 	let menuOptions: APISelectMenuOption[];
-	if (!roles.exists()) {
-		const roleNameToId: { [key in keyof typeof roleColors]?: string } = {};
-		for (const colorName in roleColors) {
-			roleNameToId[colorName as keyof typeof roleColors] = await createGuildRole(
-				interaction.guild_id!,
-				colorName,
-				roleColors[colorName as keyof typeof roleColors].colorValue,
-			);
-			pause(0.1);
+	if (rolesCache.get(interaction.guild_id!)) {
+		menuOptions = constructMenuOptionsFromCachedValue(interaction.guild_id!);
+		console.log("options in cache");
+	} else {
+		const app = await getApp();
+		const db = await getDatabase(app);
+		const guildDoc = await getDoc(doc(collection(db, "guilds"), interaction.guild_id!));
+
+		if (!guildDoc.get("roles")) {
+			const roleNameToId: { [key in keyof typeof roleColors]?: string } = {};
+			for (const colorName in roleColors) {
+				roleNameToId[colorName as keyof typeof roleColors] = await createGuildRole(
+					interaction.guild_id!,
+					colorName,
+					roleColors[colorName as keyof typeof roleColors].colorValue,
+				);
+				pause(0.1);
+			}
+
+			//TODO figure out if this completely overwrites the entire doc
+			await setDoc(doc(collection(db, "guilds"), interaction.guild_id!), { roles: roleNameToId });
+			rolesCache.set(interaction.guild_id!, roleNameToId);
+		} else {
+			const rolesField = (await guildDoc.get("roles")) as RolesField;
+			rolesCache.set(interaction.guild_id!, rolesField);
 		}
 
-		await setDoc(doc(collection(db, "guilds"), interaction.guild_id!), { roles: roleNameToId });
-
-		menuOptions = Object.keys(roleColors).map((value) => {
-			const definition = roleColors[value as keyof typeof roleColors];
-			return {
-				label: value,
-				value: roleNameToId[value as keyof typeof roleColors]!,
-				emoji: { id: definition.emojiId as `${bigint}`, name: value, animated: definition.animated },
-			};
-		});
-	} else {
-		type RolesField = { [key in keyof typeof roleColors]: string };
-
-		const rolesField = (await (await getDoc(doc(collection(db, "guilds"), interaction.guild_id!))).get(
-			"roles",
-		)) as RolesField;
-
-		menuOptions = Object.keys(rolesField).map((value) => {
-			const definition = roleColors[value as keyof typeof roleColors];
-			return {
-				label: value,
-				value: rolesField[value as keyof typeof roleColors],
-				emoji: { id: definition.emojiId as `${bigint}`, name: value, animated: definition.animated },
-			};
-		});
+		menuOptions = constructMenuOptionsFromCachedValue(interaction.guild_id!);
 	}
 
 	const response: APIInteractionResponseChannelMessageWithSource = {
