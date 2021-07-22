@@ -1,45 +1,24 @@
+import axios from "axios";
+import { authorizationHeader, endpoint } from "../constant";
 import {
-	APIButtonComponent,
 	APIInteractionResponseUpdateMessage,
 	APIMessageComponentInteraction,
-	ButtonStyle,
-	ComponentType,
+	APIMessageSelectMenuInteractionData,
 	InteractionResponseType,
 } from "../discord-api-types/v9";
-import { getValueFromCustomId } from "../util/customId";
 
 export const execute = async (interaction: APIMessageComponentInteraction) => {
-	const value = getValueFromCustomId(interaction.data.custom_id);
+	const roleId = (interaction.data as APIMessageSelectMenuInteractionData).values[0];
 
-	const yesValue = parseInt((interaction.message.components![0].components[0] as APIButtonComponent).label!) || 0;
-	const noValue = parseInt((interaction.message.components![0].components[1] as APIButtonComponent).label!) || 0;
+	await axios({
+		method: "PUT",
+		url: `${endpoint}/guilds/${interaction.guild_id!}/members/${interaction.member!.user.id}/roles/${roleId}`,
+		headers: { Authorization: authorizationHeader },
+	});
 
 	const response: APIInteractionResponseUpdateMessage = {
 		type: InteractionResponseType.UpdateMessage,
-		data: {
-			embeds: interaction.message.embeds,
-			components: [
-				{
-					type: ComponentType.ActionRow,
-					components: [
-						{
-							type: ComponentType.Button,
-							style: ButtonStyle.Success,
-							label: `${value === "yes" ? yesValue + 1 : yesValue}`,
-							emoji: { id: null, name: "👍" },
-							custom_id: "poll_vote:yes",
-						},
-						{
-							type: ComponentType.Button,
-							style: ButtonStyle.Danger,
-							label: `${value === "no" ? noValue + 1 : noValue}`,
-							emoji: { id: null, name: "👎" },
-							custom_id: "poll_vote:no",
-						},
-					],
-				},
-			],
-		},
+		data: interaction.message,
 	};
 
 	return response;
