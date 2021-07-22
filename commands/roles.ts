@@ -32,30 +32,45 @@ export const execute = async (interaction: APIMessageComponentInteraction) => {
 	const db = await getDatabase(app);
 
 	const roles = await getDoc(doc(collection(db, "guilds"), interaction.guild_id!));
-	if (roles.exists()) {
-		return;
+
+	let menuOptions: APISelectMenuOption[];
+	if (!roles.exists()) {
+		const roleNameToId: { [key in keyof typeof roleColors]?: string } = {};
+		for (const colorName in roleColors) {
+			roleNameToId[colorName as keyof typeof roleColors] = await createGuildRole(
+				interaction.guild_id!,
+				colorName,
+				roleColors[colorName as keyof typeof roleColors].colorValue,
+			);
+			pause(0.1);
+		}
+
+		await setDoc(doc(collection(db, "guilds"), interaction.guild_id!), { roles: roleNameToId });
+
+		menuOptions = Object.keys(roleColors).map((value) => {
+			const definition = roleColors[value as keyof typeof roleColors];
+			return {
+				label: value,
+				value: roleNameToId[value as keyof typeof roleColors]!,
+				emoji: { id: definition.emojiId as `${bigint}`, name: value, animated: definition.animated },
+			};
+		});
+	} else {
+		type RolesField = { [key in keyof typeof roleColors]: string };
+
+		const rolesField = (await (await getDoc(doc(collection(db, "guilds"), interaction.guild_id!))).get(
+			"roles",
+		)) as RolesField;
+
+		menuOptions = Object.keys(rolesField).map((value) => {
+			const definition = roleColors[value as keyof typeof roleColors];
+			return {
+				label: value,
+				value: rolesField[value as keyof typeof roleColors],
+				emoji: { id: definition.emojiId as `${bigint}`, name: value, animated: definition.animated },
+			};
+		});
 	}
-
-	const roleNameToId: { [key in keyof typeof roleColors]?: string } = {};
-	for (const colorName in roleColors) {
-		roleNameToId[colorName as keyof typeof roleColors] = await createGuildRole(
-			interaction.guild_id!,
-			colorName,
-			roleColors[colorName as keyof typeof roleColors].colorValue,
-		);
-		pause(0.1);
-	}
-
-	await setDoc(doc(collection(db, "guilds"), interaction.guild_id!), { roles: roleNameToId });
-
-	const menuOptions: APISelectMenuOption[] = Object.keys(roleColors).map((value) => {
-		const definition = roleColors[value as keyof typeof roleColors];
-		return {
-			label: value,
-			value: roleNameToId[value as keyof typeof roleColors]!,
-			emoji: { id: definition.emojiId as `${bigint}`, name: value, animated: definition.animated },
-		};
-	});
 
 	const response: APIInteractionResponseChannelMessageWithSource = {
 		type: InteractionResponseType.ChannelMessageWithSource,
