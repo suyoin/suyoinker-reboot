@@ -1,5 +1,5 @@
 export const getApp = async () => {
-	const { initializeApp } = await (await import("firebase/app")).default;
+	const { initializeApp } = await import("firebase/app");
 
 	return initializeApp({
 		apiKey: "AIzaSyAw7TXKG-XDr3fZl23z5H3JnFaZTpfVgWY",
