@@ -34,12 +34,14 @@ export const execute = async (interaction: APIInteraction) => {
 						{
 							type: ComponentType.Button,
 							style: ButtonStyle.Success,
+							label: "0",
 							emoji: { id: null, name: "👍" },
 							custom_id: "poll_vote:yes",
 						},
 						{
 							type: ComponentType.Button,
 							style: ButtonStyle.Danger,
+							label: "0",
 							emoji: { id: null, name: "👎" },
 							custom_id: "poll_vote:no",
 						},
