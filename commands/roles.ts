@@ -49,10 +49,11 @@ export const execute = async (interaction: APIMessageComponentInteraction) => {
 	setDoc(doc(collection(db, "guilds"), interaction.guild_id!), { roles: roleNameToId });
 
 	const menuOptions: APISelectMenuOption[] = Object.keys(roleColors).map((value) => {
+		const definition = roleColors[value as keyof typeof roleColors];
 		return {
 			label: value,
 			value: roleNameToId[value as keyof typeof roleColors]!,
-			emoji: { id: roleColors[value as keyof typeof roleColors].emojiId as `${bigint}`, name: value },
+			emoji: { id: definition.emojiId as `${bigint}`, name: value, animated: definition.animated },
 		};
 	});
 
