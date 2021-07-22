@@ -2,7 +2,6 @@ import axios from "axios";
 import { authorizationHeader, endpoint } from "../constant";
 import {
 	APIInteractionResponseChannelMessageWithSource,
-	APIInteractionResponseUpdateMessage,
 	APIMessageComponentInteraction,
 	APIMessageSelectMenuInteractionData,
 	InteractionResponseType,
@@ -31,9 +30,12 @@ export const execute = async (interaction: APIMessageComponentInteraction) => {
 		headers: { Authorization: authorizationHeader },
 	});
 
-	const response: APIInteractionResponseUpdateMessage = {
-		type: InteractionResponseType.UpdateMessage,
-		data: interaction.message,
+	const response: APIInteractionResponseChannelMessageWithSource = {
+		type: InteractionResponseType.ChannelMessageWithSource,
+		data: {
+			content: "Role grant successful.",
+			flags: MessageFlags.Ephemeral,
+		},
 	};
 
 	return response;
