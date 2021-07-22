@@ -1,20 +1,21 @@
 import {
-	APIButtonComponent,
-	APIInteractionResponseUpdateMessage,
-	APIMessageComponentInteraction,
-	ButtonStyle,
-	ComponentType,
+	//APIButtonComponent,
+	APIInteractionResponseChannelMessageWithSource,
+	//APIInteractionResponseUpdateMessage,
+	//APIMessageComponentInteraction,
+	//ButtonStyle,
+	//ComponentType,
 	InteractionResponseType,
 } from "../discord-api-types/v9";
-import { getValueFromCustomId } from "../util/customId";
+//import { getValueFromCustomId } from "../util/customId";
 
-export const execute = async (interaction: APIMessageComponentInteraction) => {
-	const value = getValueFromCustomId(interaction.data.custom_id);
+export const execute = async (/*interaction: APIMessageComponentInteraction*/) => {
+	//const value = getValueFromCustomId(interaction.data.custom_id);
 
-	const yesValue = parseInt((interaction.message.components![0].components[0] as APIButtonComponent).label!) || 0;
-	const noValue = parseInt((interaction.message.components![0].components[1] as APIButtonComponent).label!) || 0;
+	//const yesValue = parseInt((interaction.message.components![0].components[0] as APIButtonComponent).label!) || 0;
+	//const noValue = parseInt((interaction.message.components![0].components[1] as APIButtonComponent).label!) || 0;
 
-	const response: APIInteractionResponseUpdateMessage = {
+	/**const response: APIInteractionResponseUpdateMessage = {
 		type: InteractionResponseType.UpdateMessage,
 		data: {
 			embeds: interaction.message.embeds,
@@ -39,6 +40,13 @@ export const execute = async (interaction: APIMessageComponentInteraction) => {
 					],
 				},
 			],
+		},
+	};*/
+
+	const response: APIInteractionResponseChannelMessageWithSource = {
+		type: InteractionResponseType.ChannelMessageWithSource,
+		data: {
+			content: "test",
 		},
 	};
 
