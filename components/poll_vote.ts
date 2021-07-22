@@ -39,7 +39,7 @@ export const execute = async (interaction: APIInteraction) => {
 							style: ButtonStyle.Danger,
 							label: `${value === "no" ? noValue + 1 : noValue}`,
 							emoji: { id: null, name: "👎" },
-							custom_id: "poll_voteL:no",
+							custom_id: "poll_vote:no",
 						},
 					],
 				},
