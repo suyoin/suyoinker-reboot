@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 import parseBody from "../../util/parseBody";
 import verifyInteraction from "../../util/verifyInteraction";
+import { getRootCustomId } from "../../util/customId";
 
 const { PUBLIC_KEY } = process.env;
 
@@ -11,9 +12,18 @@ const commandFiles = readdirSync(path.join(process.cwd(), "commands")).filter((f
 	return !file.startsWith("commandDefinitions");
 });
 
+const componentFiles = readdirSync(path.join(process.cwd(), "components")).filter((file) => {
+	return file;
+});
+
 const commands = new Map<string, CommandExport>();
 commandFiles.forEach((file) => {
 	commands.set(file.replace(".ts", ""), require(`../../commands/${file}`));
+});
+
+const components = new Map<string, ComponentExport>();
+componentFiles.forEach((file) => {
+	components.set(file.replace(".ts", ""), require(`../../components/${file}`));
 });
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -57,6 +67,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		res.status(200);
 		if (commandResponse) {
 			res.send(commandResponse);
+		}
+	} else if (interaction.type === InteractionType.MessageComponent) {
+		const id = getRootCustomId(interaction.data.custom_id);
+		if (!components.has(id)) {
+			console.log(`${id} component does not have a handler file.`);
+			res.status(400).end("[interaction]: Component handler does not exist");
+			return;
+		}
+
+		const componentResponse = await components.get(id)!.execute(interaction);
+		res.status(200);
+		if (componentResponse) {
+			res.send(componentResponse);
 		}
 	}
 };
