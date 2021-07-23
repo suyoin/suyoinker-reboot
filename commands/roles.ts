@@ -4,6 +4,7 @@ import { authorizationHeader, endpoint } from "../constant";
 import roleColors from "../data/roleColors";
 import {
 	APIInteractionResponseChannelMessageWithSource,
+	APIInteractionResponseDeferredChannelMessageWithSource,
 	APIMessageComponentInteraction,
 	APIRole,
 	APISelectMenuOption,
@@ -42,6 +43,7 @@ const constructMenuOptionsFromCachedValue = (guildId: string): APISelectMenuOpti
 };
 
 export const execute = async (interaction: APIMessageComponentInteraction) => {
+	let deferred = false;
 	let menuOptions: APISelectMenuOption[];
 	if (rolesCache.get(interaction.guild_id!)) {
 		menuOptions = constructMenuOptionsFromCachedValue(interaction.guild_id!);
@@ -52,6 +54,18 @@ export const execute = async (interaction: APIMessageComponentInteraction) => {
 		const guildDoc = await getDoc(doc(collection(db, "guilds"), interaction.guild_id!));
 
 		if (!guildDoc.get("roles")) {
+			deferred = true;
+
+			const deferredResponse: APIInteractionResponseDeferredChannelMessageWithSource = {
+				type: InteractionResponseType.DeferredChannelMessageWithSource,
+			};
+
+			await axios({
+				method: "POST",
+				url: `${endpoint}/interactions/${interaction.id}/${interaction.token}/callback`,
+				data: deferredResponse,
+			});
+
 			const roleNameToId: Partial<RolesField> = {};
 			for (const colorName in roleColors) {
 				roleNameToId[colorName as keyof typeof roleColors] = await createGuildRole(
@@ -63,38 +77,58 @@ export const execute = async (interaction: APIMessageComponentInteraction) => {
 			}
 
 			//TODO figure out if this completely overwrites the entire doc
-			console.log("beofore set");
 			await setDoc(doc(collection(db, "guilds"), interaction.guild_id!), { roles: roleNameToId });
-			console.log("after set");
 			rolesCache.set(interaction.guild_id!, roleNameToId as RolesField);
-			console.log("cache set");
 		} else {
 			const rolesField = (await guildDoc.get("roles")) as RolesField;
 			rolesCache.set(interaction.guild_id!, rolesField);
 		}
-		console.log("before construct");
+
 		menuOptions = constructMenuOptionsFromCachedValue(interaction.guild_id!);
-		console.log("after construct");
 	}
 
-	const response: APIInteractionResponseChannelMessageWithSource = {
-		type: InteractionResponseType.ChannelMessageWithSource,
-		data: {
-			content: "Choose a role:",
-			components: [
-				{
-					type: ComponentType.ActionRow,
-					components: [
-						{
-							type: ComponentType.SelectMenu,
-							custom_id: "role_menu",
-							options: menuOptions,
-						},
-					],
-				},
-			],
-		},
-	};
+	if (!deferred) {
+		const response: APIInteractionResponseChannelMessageWithSource = {
+			type: InteractionResponseType.ChannelMessageWithSource,
+			data: {
+				content: "Choose a role:",
+				components: [
+					{
+						type: ComponentType.ActionRow,
+						components: [
+							{
+								type: ComponentType.SelectMenu,
+								custom_id: "role_menu",
+								options: menuOptions,
+							},
+						],
+					},
+				],
+			},
+		};
 
-	return response;
+		return response;
+	} else {
+		await axios({
+			method: "POST",
+			url: `${endpoint}/webhooks/${process.env.CLIENT_ID}/${interaction.token}/messages/@original`,
+			data: {
+				content: "Choose a role:",
+				components: [
+					{
+						type: ComponentType.ActionRow,
+						components: [
+							{
+								type: ComponentType.SelectMenu,
+								custom_id: "role_menu",
+								options: menuOptions,
+							},
+						],
+					},
+				],
+			},
+		});
+
+		return;
+	}
 };
