@@ -1,5 +1,5 @@
 /** Preserve the keys of an object literal but enforce a shape for the values */
-export const TypedObjectLiteral = <TShape>() => {
+const TypedObjectLiteral = <TShape>() => {
 	return <T extends { [key in keyof T]: TShape }>(args: T) => {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		//@ts-ignore
