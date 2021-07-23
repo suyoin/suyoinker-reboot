@@ -34,6 +34,8 @@ export const execute = async (interaction: APIMessageComponentInteraction) => {
 			interaction.guild_id!,
 			(await (await getDoc(doc(collection(db, "guilds"), interaction.guild_id!))).get("roles")) as RolesField,
 		);
+	} else {
+		console.log("roles in cache");
 	}
 
 	const roleIdMap = new Map<string, true>();
