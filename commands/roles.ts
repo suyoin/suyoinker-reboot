@@ -110,7 +110,7 @@ export const execute = async (interaction: APIMessageComponentInteraction) => {
 		return response;
 	} else {
 		await axios({
-			method: "POST",
+			method: "PATCH",
 			url: `${endpoint}/webhooks/${process.env.CLIENT_ID}/${interaction.token}/messages/@original`,
 			data: {
 				content: "Choose a role:",
