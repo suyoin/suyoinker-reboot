@@ -1,1 +1,1 @@
-type RolesField = { [key in keyof typeof roleColors]: string };
+type RolesField = { [key in keyof typeof import("../data/roleColors")["default"]]: string };
