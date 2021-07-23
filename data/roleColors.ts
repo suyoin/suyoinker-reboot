@@ -15,7 +15,7 @@ export interface ColorDefinition {
 }
 
 export default TypedObjectLiteral<ColorDefinition>()({
-	aqua: { emojiId: "865778039928651818", colorValue: 2, animated: true },
+	aqua: { emojiId: "865778039928651818", colorValue: 1752220, animated: true },
 	green: { emojiId: "865778039928651818", colorValue: 3066993, animated: true },
 	blue: { emojiId: "865778039928651818", colorValue: 3447003, animated: true },
 	purple: { emojiId: "865778039928651818", colorValue: 10181046, animated: true },
