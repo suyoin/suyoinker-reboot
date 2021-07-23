@@ -37,11 +37,11 @@ export const execute = async (interaction: APIMessageComponentInteraction) => {
 	}
 
 	const roleIdMap = new Map<string, true>();
-	for (const v in Object.values(rolesCache.get(interaction.guild_id!)!)) {
+	for (const v of Object.values(rolesCache.get(interaction.guild_id!)!)) {
 		roleIdMap.set(v, true);
 	}
 
-	for (const v in Object.values(interaction.member!.roles)) {
+	for (const v of Object.values(interaction.member!.roles)) {
 		if (roleIdMap.has(v)) {
 			await axios({
 				method: "DELETE",
