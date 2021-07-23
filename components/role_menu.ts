@@ -1,4 +1,5 @@
 import axios from "axios";
+import { collection, doc, getDoc } from "firebase/firestore";
 import { authorizationHeader, endpoint } from "../constant";
 import {
 	APIInteractionResponseChannelMessageWithSource,
@@ -7,6 +8,8 @@ import {
 	InteractionResponseType,
 	MessageFlags,
 } from "../discord-api-types/v9";
+import { rolesCache } from "../lib/cache";
+import { getApp, getDatabase } from "../lib/firebase";
 
 export const execute = async (interaction: APIMessageComponentInteraction) => {
 	const roleId = (interaction.data as APIMessageSelectMenuInteractionData).values[0];
@@ -22,6 +25,30 @@ export const execute = async (interaction: APIMessageComponentInteraction) => {
 		};
 
 		return response;
+	}
+
+	if (!rolesCache.get(interaction.guild_id!)) {
+		const app = await getApp();
+		const db = await getDatabase(app);
+		rolesCache.set(
+			interaction.guild_id!,
+			(await (await getDoc(doc(collection(db, "guilds"), interaction.guild_id!))).get("roles")) as RolesField,
+		);
+	}
+
+	const roleIdMap = new Map<string, true>();
+	for (const v in Object.values(rolesCache.get(interaction.guild_id!)!)) {
+		roleIdMap.set(v, true);
+	}
+
+	for (const v in Object.values(interaction.member!.roles)) {
+		if (roleIdMap.has(v)) {
+			await axios({
+				method: "DELETE",
+				url: `${endpoint}/guilds/${interaction.guild_id!}/members/${interaction.member!.user.id}/roles/${v}`,
+				headers: { Authorization: authorizationHeader },
+			});
+		}
 	}
 
 	await axios({
