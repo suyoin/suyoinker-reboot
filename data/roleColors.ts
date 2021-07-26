@@ -15,13 +15,13 @@ export interface ColorDefinition {
 }
 
 export default TypedObjectLiteral<ColorDefinition>()({
-	aqua: { emojiId: "865778039928651818", colorValue: 1752220, animated: true },
-	green: { emojiId: "865778039928651818", colorValue: 3066993, animated: true },
-	blue: { emojiId: "865778039928651818", colorValue: 3447003, animated: true },
-	purple: { emojiId: "865778039928651818", colorValue: 10181046, animated: true },
-	gold: { emojiId: "865778039928651818", colorValue: 15844367, animated: true },
-	orange: { emojiId: "865778039928651818", colorValue: 15105570, animated: true },
-	red: { emojiId: "865778039928651818", colorValue: 15158332, animated: true },
-	navy: { emojiId: "865778039928651818", colorValue: 3426654, animated: true },
-	yellow: { emojiId: "865778039928651818", colorValue: 16776960, animated: true },
+	aqua: { emojiId: "807796512507560007", colorValue: 1752220, animated: true },
+	green: { emojiId: "807796512507560007", colorValue: 3066993, animated: true },
+	blue: { emojiId: "807796512507560007", colorValue: 3447003, animated: true },
+	purple: { emojiId: "807796512507560007", colorValue: 10181046, animated: true },
+	gold: { emojiId: "807796512507560007", colorValue: 15844367, animated: true },
+	orange: { emojiId: "807796512507560007", colorValue: 15105570, animated: true },
+	red: { emojiId: "807796512507560007", colorValue: 15158332, animated: true },
+	navy: { emojiId: "807796512507560007", colorValue: 3426654, animated: true },
+	yellow: { emojiId: "807796512507560007", colorValue: 16776960, animated: true },
 });
